@@ -39,6 +39,6 @@ public class ApplicationContextBasicFindTest {
     @DisplayName("빈 이름으로 조회 X")
     void findBeanByNameX(){
         org.junit.jupiter.api.Assertions.assertThrows(NoSuchBeanDefinitionException.class,
-                ()->ac.getBean("xxxxx", MemberService.class) );
+                ()-> ac.getBean("xxxxx", MemberService.class) );
     }
 }
