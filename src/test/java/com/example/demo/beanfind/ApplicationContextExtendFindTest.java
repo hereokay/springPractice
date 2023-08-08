@@ -1,11 +1,9 @@
 package com.example.demo.beanfind;
 
-import com.example.demo.AppConfig;
 import com.example.demo.discount.DiscountPolicy;
 import com.example.demo.discount.FixDiscountPolicy;
 import com.example.demo.discount.RateDiscountPolicy;
-import com.example.demo.member.MemberService;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
@@ -15,27 +13,43 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 
-public class ApplicationContextSameBeanFindTest {
+import static org.assertj.core.api.Assertions.*;
+
+public class ApplicationContextExtendFindTest {
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SameBeanConfig.class);
 
     @Test
-    @DisplayName("두개의 빈 한번에 조회 X")
-    void findBeanByTypeDuplicate(){
-        org.junit.jupiter.api.Assertions.assertThrows(NoUniqueBeanDefinitionException.class,
+    @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면, 중복 오류가 발생한다.")
+    void findBeanByParentTypeDuplicatate(){
+        Assertions.assertThrows(NoUniqueBeanDefinitionException.class,
                 ()-> ac.getBean(DiscountPolicy.class));
     }
 
+    @Test
+    @DisplayName("부모 타입으로 조회시 자식이 둘 이상 있으면, 빈 이름을 지정하면 된다.")
+    void findBeanByParentTypeBeanName(){
+        DiscountPolicy rateDiscountPolicy = ac.getBean("rateDiscountPolicy", DiscountPolicy.class);
+        assertThat(rateDiscountPolicy).isInstanceOf(RateDiscountPolicy.class);
+    }
 
     @Test
-    @DisplayName("타입으로 모두 조회")
-    void findBeanByNameDuplicate(){
+    @DisplayName("부모 타입으로 모두 조회하기")
+    void findBeanByParentType(){
         Map<String, DiscountPolicy> beansOfType = ac.getBeansOfType(DiscountPolicy.class);
+        assertThat(beansOfType.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("부모 타입으로 모두 조회하기 - Object")
+    void findBeanByObject(){
+        Map<String, Object> beansOfType = ac.getBeansOfType(Object.class);
         for (String s : beansOfType.keySet()) {
             System.out.println("s = " + s);
             System.out.println("beansOfType = " + beansOfType.get(s));
         }
-        Assertions.assertThat(beansOfType.size()).isEqualTo(2);
+
     }
+
 
     @Configuration
     static class SameBeanConfig{
