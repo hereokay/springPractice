@@ -1,11 +1,13 @@
 package com.example.demo.member;
 
+import com.example.demo.AppConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MemberServiceTest {
 
-    MemberService memberService ;
+    AppConfig appConfig = new AppConfig();
+    MemberService memberService = appConfig.memberService();
 
     @Test
     void join(){

@@ -15,4 +15,6 @@ public class SingletonServiceTest {
 
         Assertions.assertThat(instance1).isSameAs(instance2);
     }
+
+
 }
