@@ -18,6 +18,6 @@ public class SingletonTest {
         MemberService memberService1 = appConfig.memberService();
         MemberService memberService2 = appConfig.memberService();
 
-        Assertions.assertThat(memberService1).isNotEqualTo(memberService2);
+        Assertions.assertThat(memberService1).isNotSameAs(memberService2);
     }
 }
