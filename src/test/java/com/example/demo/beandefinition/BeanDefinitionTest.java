@@ -13,7 +13,7 @@ public class BeanDefinitionTest {
     void findApplicationBean()
     {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
-
+ 
         String[] beanDefinitionNames = ac.getBeanDefinitionNames();
         for (String beanDefinitionName : beanDefinitionNames) {
             BeanDefinition beanDefinition = ac.getBeanDefinition(beanDefinitionName);
